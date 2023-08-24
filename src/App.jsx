@@ -1,14 +1,17 @@
-import { useContext } from "react";
-import { FreeToPlayContext } from "./context/FreeToPlayProvider";
+import { Route, Routes } from "react-router-dom";
+import Layout from "./page/Layout";
+import "./css/global.css";
+import Info from "./page/Info";
+import GameOnePage from "./page/GameOnePage";
 
 function App() {
-  const ctx = useContext(FreeToPlayContext);
-
   return (
-    <>
-      {ctx.count} <button onClick={() => ctx.increment()}>++</button>
-      <button onClick={() => ctx.decrement()}>--</button>
-    </>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Info />} />
+        <Route path="/one" element={<GameOnePage />} />
+      </Route>
+    </Routes>
   );
 }
 

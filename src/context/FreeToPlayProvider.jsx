@@ -1,23 +1,20 @@
 import { createContext, useState } from "react";
+import GamesService from "../API/GamesService";
 
 export const FreeToPlayContext = createContext({
-  count: 0,
-  increment: () => {},
-  decrement: () => {},
+  games: [],
+  fetchGames: () => {},
 });
 
 export const FreeToPlayProvider = ({ children }) => {
-  const [count, setCount] = useState(0);
+  const [games, setGames] = useState([]);
 
-  const increment = () => {
-    setCount(count + 1);
+  const fetchGames = async () => {
+    const gamesArray = await GamesService.getGameList();
+    setGames(gamesArray);
   };
 
-  const decrement = () => {
-    setCount(count - 1);
-  };
-
-  const value = { count, increment, decrement };
+  const value = { games, fetchGames };
 
   return (
     <FreeToPlayContext.Provider value={value}>

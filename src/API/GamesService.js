@@ -1,7 +1,7 @@
 import axios from "axios";
 
 export default class GamesService {
-  static async getGameList() {
+  static async getGameList(thunkAPI) {
     try {
       const apiUrl =
         "https://cors-anywhere.herokuapp.com/https://www.freetogame.com/api/games";
@@ -11,9 +11,31 @@ export default class GamesService {
           "X-Requested-With": "XMLHttpRequest",
         },
       });
-      return response.data;
+
+      return response ? response.data : "";
     } catch (error) {
-      console.log(error);
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+  static async getGameById(id) {
+    try {
+      const apiUrl =
+        "https://cors-anywhere.herokuapp.com/https://www.freetogame.com/api/game/";
+
+      const response = await axios.get(apiUrl, {
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+        },
+        params: {
+          id: id,
+        },
+      });
+
+      console.log(response.data);
+
+      return response ? response.data : "";
+    } catch (error) {
+      console.error(error);
     }
   }
 }

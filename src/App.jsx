@@ -6,9 +6,9 @@ import GameOnePage from "./page/GameOnePage";
 function App() {
   return (
     <Routes>
-      <Route path="/" element={<Layout />}>
+      <Route path="/games" element={<Layout />}>
         <Route index element={<Info />} />
-        <Route path="/one" element={<GameOnePage />} />
+        <Route path="games/:id" element={<GameOnePage />} />
       </Route>
     </Routes>
   );

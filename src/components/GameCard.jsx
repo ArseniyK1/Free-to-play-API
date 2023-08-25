@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const GameCard = ({ game }) => {
   return (
     <div className="col-md-4 mb-4">
@@ -14,7 +16,9 @@ const GameCard = ({ game }) => {
           <p className="card-text">Жанр: {game.genre}</p>
         </div>
         <div className="card-footer">
-          <button className="btn btn-primary">Подробнее</button>
+          <button className="btn btn-primary">
+            <Link to={`games/${game.id}`}>Подробнее</Link>
+          </button>
         </div>
       </div>
     </div>

@@ -1,23 +1,22 @@
 import GameCard from "./GameCard";
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import GameFilter from "./GameFilter";
-import { FreeToPlayContext } from "../context/FreeToPlayProvider";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchGames } from "../store/gamesSlice";
 
 const GamesList = () => {
-  const { games, fetchGames } = useContext(FreeToPlayContext);
+  const games = useSelector((state) => state.games.array);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    try {
-      fetchGames();
-    } catch (error) {
-      console.error(error);
-    }
+    dispatch(fetchGames());
   }, []);
 
   return (
     <div>
       <div className="container mt-5">
         <h2 className="mb-4">Список игр</h2>
+
         <div className="row">
           <GameFilter />
           <div className="row">

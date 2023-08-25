@@ -1,0 +1,56 @@
+* {
+  --purple-primary: rgba(87, 99, 178, 1);
+  --purple-primary-hover: rgba(87, 99, 178, 0.5);
+  --gray-dark: #2e2929;
+  --gray-middle: #292b2c;
+  --gray-light: #636363;
+  --white-primary: #fff;
+}
+
+body {
+  background-color: #1a1a1a;
+  color: #ffffff;
+}
+
+.navbar {
+  background-color: var(--gray-middle);
+}
+
+.game-card {
+  background-color: var(--gray-light);
+  margin-bottom: 20px;
+}
+
+.game-card {
+  background-color: var(--gray-dark);
+  color: var(--white-primary);
+  border: 0.1rem solid var(--gray-light);
+}
+
+.btn {
+  background-color: var(--purple-primary);
+  border: none;
+}
+
+.btn:hover {
+  background-color: var(--purple-primary-hover);
+}
+
+.card-footer {
+  border-top: none;
+}
+
+a {
+  text-decoration: none;
+  color: var(--white-primary);
+}
+
+.active {
+  background-color: var(--purple-primary);
+}
+
+.nav-link {
+  padding: 0.5rem;
+  outline: 1px solid var(--purple-primary);
+  border-radius: 10px;
+}

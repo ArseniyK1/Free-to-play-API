@@ -1,6 +1,5 @@
 import { Route, Routes } from "react-router-dom";
 import Layout from "./page/Layout";
-import "./css/global.css";
 import Info from "./page/Info";
 import GameOnePage from "./page/GameOnePage";
 

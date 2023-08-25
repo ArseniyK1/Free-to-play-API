@@ -3,12 +3,13 @@ import ReactDOM from "react-dom/client";
 import App from "./App.jsx";
 import "./index.css";
 import { BrowserRouter } from "react-router-dom";
-import { FreeToPlayProvider } from "./context/FreeToPlayProvider.jsx";
+import { Provider } from "react-redux";
+import store from "./store/store.js";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <BrowserRouter>
-    <FreeToPlayProvider>
+    <Provider store={store}>
       <App />
-    </FreeToPlayProvider>
+    </Provider>
   </BrowserRouter>
 );

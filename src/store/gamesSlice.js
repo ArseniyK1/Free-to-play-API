@@ -25,8 +25,34 @@ export const gamesSlice = createSlice({
     error: null,
     status: null,
     oneGame: null,
+    sortGame: [],
   },
-  reducers: {},
+  reducers: {
+    sortGames: (state, action) => {
+      console.log(action.payload.typeSort);
+      switch (action.payload.typeSort) {
+        case "Платформа":
+          state.sortGame = [...state.array].filter((element) =>
+            element.platform.includes(action.payload.platform)
+          );
+          break;
+        case "Жанр":
+          state.sortGame = [...state.array].filter((element) =>
+            element.genre.includes(action.payload.genre)
+          );
+          break;
+        // case "Сортировка":
+        //   state.sortGame = [...state.array].filter((element) =>
+        //     element.genre.includes(action.payload.platform)
+        //   );
+        //   break;
+
+        default:
+          state.sortGame = [...state.array];
+          break;
+      }
+    },
+  },
   extraReducers: {
     [fetchGames.pending]: (state) => {
       state.status = "loading";
@@ -47,7 +73,6 @@ export const gamesSlice = createSlice({
     },
     [fetchGamesById.fulfilled]: (state, action) => {
       state.status = "resolved";
-      console.log(action);
       state.oneGame = action.payload;
     },
     [fetchGamesById.rejected]: (state, action) => {
@@ -56,5 +81,7 @@ export const gamesSlice = createSlice({
     },
   },
 });
+
+export const { sortGames } = gamesSlice.actions;
 
 export default gamesSlice.reducer;

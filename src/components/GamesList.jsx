@@ -6,8 +6,16 @@ import { fetchGames } from "../store/gamesSlice";
 import { Button, Spinner } from "react-bootstrap";
 
 const GamesList = () => {
-  const { array, status, error } = useSelector((state) => state.games);
+  const { array, status, error, sortGame } = useSelector(
+    (state) => state.games
+  );
   const dispatch = useDispatch();
+
+  let displayedGames = array;
+
+  if (sortGame.length > 0) {
+    displayedGames = sortGame; // Если есть отсортированный массив, используем его
+  }
 
   useEffect(() => {
     dispatch(fetchGames());
@@ -37,9 +45,20 @@ const GamesList = () => {
                 />
               </Button>
             )}
-            {error && <h2>Ошибка: {error}</h2>}
-            {array &&
-              array.map((game) => <GameCard game={game} key={game.id} />)}
+            {error && (
+              <>
+                <h2>Ошибка: {error} </h2>
+                <a
+                  href="https://cors-anywhere.herokuapp.com/corsdemo"
+                  target="_blank"
+                >
+                  Подтвердите, пожалуйста, демо сервер CORS
+                </a>
+              </>
+            )}
+            {displayedGames.map((game) => (
+              <GameCard game={game} key={game.id} />
+            ))}
           </div>
         </div>
       </div>

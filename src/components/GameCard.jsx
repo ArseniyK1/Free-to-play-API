@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 
 const GameCard = ({ game }) => {
+  // console.log(game);
   return (
     <div className="col-md-4 mb-4">
       <div className="card game-card align-items-stretch h-100">

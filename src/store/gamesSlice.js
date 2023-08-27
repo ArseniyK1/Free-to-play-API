@@ -18,6 +18,15 @@ export const fetchGamesById = createAsyncThunk(
   }
 );
 
+export const fetchGamesByPopularity = createAsyncThunk(
+  "games/fetchGamesByPopularity",
+  async () => {
+    const gamesPopularity = await GamesService.sortGameByPopularity();
+
+    return gamesPopularity;
+  }
+);
+
 export const gamesSlice = createSlice({
   name: "games",
   initialState: {
@@ -29,7 +38,6 @@ export const gamesSlice = createSlice({
   },
   reducers: {
     sortGames: (state, action) => {
-      console.log(action.payload.typeSort);
       switch (action.payload.typeSort) {
         case "Платформа":
           state.sortGame = [...state.array].filter((element) =>
@@ -41,11 +49,17 @@ export const gamesSlice = createSlice({
             element.genre.includes(action.payload.genre)
           );
           break;
-        // case "Сортировка":
-        //   state.sortGame = [...state.array].filter((element) =>
-        //     element.genre.includes(action.payload.platform)
-        //   );
-        //   break;
+        case "По дате релиза":
+          state.sortGame = [...state.array].sort(
+            (current, next) =>
+              new Date(next.release_date) - new Date(current.release_date)
+          );
+          break;
+        case "По названию":
+          state.sortGame = [...state.array].sort((a, b) =>
+            a.title.localeCompare(b.title)
+          );
+          break;
 
         default:
           state.sortGame = [...state.array];
@@ -53,32 +67,47 @@ export const gamesSlice = createSlice({
       }
     },
   },
-  extraReducers: {
-    [fetchGames.pending]: (state) => {
-      state.status = "loading";
-      state.error = null;
-    },
-    [fetchGames.fulfilled]: (state, action) => {
-      state.status = "resolved";
-      state.array = action.payload;
-    },
-    [fetchGames.rejected]: (state, action) => {
-      state.status = "rejected";
-      state.error = action.payload;
-    },
-
-    [fetchGamesById.pending]: (state) => {
-      state.status = "loading";
-      state.error = null;
-    },
-    [fetchGamesById.fulfilled]: (state, action) => {
-      state.status = "resolved";
-      state.oneGame = action.payload;
-    },
-    [fetchGamesById.rejected]: (state, action) => {
-      state.status = "rejected";
-      state.error = action.payload;
-    },
+  extraReducers: (builder) => {
+    builder
+      // получение всех игр без сортировки
+      .addCase(fetchGames.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(fetchGames.fulfilled, (state, action) => {
+        state.status = "resolved";
+        state.array = action.payload;
+      })
+      .addCase(fetchGames.rejected, (state, action) => {
+        state.status = "rejected";
+        state.error = action.payload;
+      })
+      // получение одной игры без сортировки
+      .addCase(fetchGamesById.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(fetchGamesById.fulfilled, (state, action) => {
+        state.status = "resolved";
+        state.oneGame = action.payload;
+      })
+      .addCase(fetchGamesById.rejected, (state, action) => {
+        state.status = "rejected";
+        state.error = action.payload;
+      })
+      // получение всех игр с сортировкой по популярности
+      .addCase(fetchGamesByPopularity.pending, (state) => {
+        state.status = "loading";
+        state.error = null;
+      })
+      .addCase(fetchGamesByPopularity.fulfilled, (state, action) => {
+        state.status = "resolved";
+        state.sortGame = action.payload;
+      })
+      .addCase(fetchGamesByPopularity.rejected, (state, action) => {
+        state.status = "rejected";
+        state.error = action.payload;
+      });
   },
 });
 

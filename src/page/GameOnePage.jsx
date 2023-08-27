@@ -55,7 +55,8 @@ const GamePage = () => {
               <h3>Системные требования</h3>
               <p>
                 Минимальные требования:{" "}
-                {oneGame.minimum_system_requirements.graphics}
+                {oneGame.minimum_system_requirements.graphics ??
+                  oneGame.minimum_system_requirements.graphics}
               </p>
             </div>
 

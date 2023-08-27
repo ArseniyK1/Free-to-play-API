@@ -1,8 +1,8 @@
 import GameCard from "./GameCard";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import GameFilter from "./GameFilter";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchGames } from "../store/gamesSlice";
+import { fetchGames, fetchGamesByPopularity } from "../store/gamesSlice";
 import { Button, Spinner } from "react-bootstrap";
 
 const GamesList = () => {
@@ -10,16 +10,19 @@ const GamesList = () => {
     (state) => state.games
   );
   const dispatch = useDispatch();
-
-  let displayedGames = array;
-
-  if (sortGame.length > 0) {
-    displayedGames = sortGame; // Если есть отсортированный массив, используем его
-  }
+  let displayedGames = sortGame.length > 0 ? sortGame : array; // Используем отсортированный массив, если он есть
 
   useEffect(() => {
     dispatch(fetchGames());
   }, [dispatch]);
+
+  const fetchGamesWithSort = (sortType) => {
+    dispatch(fetchGames()); // Загружаем игры без сортировки перед запросом с сортировкой
+
+    if (sortType === "По популярности") {
+      dispatch(fetchGamesByPopularity());
+    }
+  };
 
   return (
     <div>
@@ -27,9 +30,9 @@ const GamesList = () => {
         <h2 className="mb-4">Список игр</h2>
 
         <div className="row">
-          <GameFilter />
+          <GameFilter fetchGamesWithSort={fetchGamesWithSort} />
           <div className="row">
-            {status === "loading" && (
+            {status === "loading" && displayedGames.length === 0 && (
               <Button
                 variant="primary"
                 disabled

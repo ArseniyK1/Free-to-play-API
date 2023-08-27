@@ -2,28 +2,33 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { sortGames } from "../store/gamesSlice";
 
-const GameFilter = () => {
-  const [sort, setSort] = useState({ platform: "", genre: "", etc: "" });
+const GameFilter = ({ fetchGamesWithSort }) => {
+  const [sort, setSort] = useState({
+    platform: "",
+    genre: "",
+    etc: "Все", // По умолчанию "Все"
+  });
+
   const dispatch = useDispatch();
 
   const changeSortPlatformHandler = (event) => {
     const platform = event.target.value;
-    const typeSort = "Платформа";
-    setSort({ ...sort, platform: platform });
-    dispatch(sortGames({ platform, typeSort }));
+    setSort({ ...sort, platform });
+    dispatch(sortGames({ platform, typeSort: "Платформа" }));
   };
 
   const changeSortGenreHandler = (event) => {
     const genre = event.target.value;
-    const typeSort = "Жанр";
-    setSort({ ...sort, genre: genre });
-    dispatch(sortGames({ genre, typeSort }));
+    setSort({ ...sort, genre });
+    dispatch(sortGames({ genre, typeSort: "Жанр" }));
   };
 
   const changeSortEtcHandler = (event) => {
-    setSort({ ...sort, etc: event.target.value });
+    const etc = event.target.value;
+    setSort({ ...sort, etc });
+    fetchGamesWithSort(etc); // Вызываем функцию для загрузки игр с выбранной сортировкой
+    dispatch(sortGames({ etc, typeSort: etc }));
   };
-
   return (
     <div className="col-md-5 d-flex  mb-3 w-30 justify-content-between">
       <div className="">
@@ -40,7 +45,7 @@ const GameFilter = () => {
           onChange={changeSortPlatformHandler}
           value={sort.platform}
         >
-          <option selected>Все</option>
+          <option>Все</option>
           <option>PC</option>
           <option>Web Browser</option>
         </select>
@@ -59,7 +64,7 @@ const GameFilter = () => {
           onChange={changeSortGenreHandler}
           value={sort.genre}
         >
-          <option selected>Все</option>
+          <option>Все</option>
           <option>Shooter</option>
           <option>MMOARPG</option>
           <option>ARPG</option>
@@ -90,8 +95,9 @@ const GameFilter = () => {
           onChange={changeSortEtcHandler}
           value={sort.etc}
         >
-          <option selected>По дате релиза</option>
+          <option>Все</option>
           <option>По популярности</option>
+          <option>По дате релиза</option>
           <option>По названию</option>
         </select>
       </div>

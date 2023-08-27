@@ -31,7 +31,24 @@ export default class GamesService {
         },
       });
 
-      console.log(response.data);
+      return response ? response.data : "";
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  static async sortGameByPopularity() {
+    try {
+      const apiUrl =
+        "https://cors-anywhere.herokuapp.com/https://www.freetogame.com/api/games";
+
+      const response = await axios.get(apiUrl, {
+        headers: {
+          "X-Requested-With": "XMLHttpRequest",
+        },
+        params: {
+          "sort-by": "popularity",
+        },
+      });
 
       return response ? response.data : "";
     } catch (error) {

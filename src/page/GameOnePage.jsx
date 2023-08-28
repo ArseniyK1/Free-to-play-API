@@ -1,18 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { fetchGamesById } from "../store/gamesSlice";
 import { Button, Spinner } from "react-bootstrap";
+
+const initialSlideIndex = 0;
 
 const GamePage = () => {
   const { id } = useParams();
   const { oneGame, status, error } = useSelector((state) => state.games);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [activeSlideIndex, setActiveSlideIndex] = useState(initialSlideIndex);
+  console.log(oneGame);
 
   useEffect(() => {
     dispatch(fetchGamesById(id));
   }, [id]);
+
+  if (error) {
+    return <p>Error</p>;
+  }
 
   return (
     <div className="container mt-5">
@@ -52,12 +60,19 @@ const GamePage = () => {
             </div>
 
             <div className="mt-4">
-              <h3>Системные требования</h3>
-              <p>
-                Минимальные требования:{" "}
-                {oneGame.minimum_system_requirements.graphics ??
-                  oneGame.minimum_system_requirements.graphics}
-              </p>
+              {oneGame.minimum_system_requirements ? (
+                <>
+                  <h3>Системные требования</h3>
+                  Минимальные требования:
+                  <p>{oneGame.minimum_system_requirements.graphics}</p>
+                  <p>{oneGame.minimum_system_requirements.memory}</p>
+                  <p>{oneGame.minimum_system_requirements.os}</p>
+                  <p>{oneGame.minimum_system_requirements.processor}</p>
+                  <p>{oneGame.minimum_system_requirements.storage}</p>
+                </>
+              ) : (
+                ""
+              )}
             </div>
 
             <div className="mt-4">
@@ -68,19 +83,33 @@ const GamePage = () => {
                 data-bs-ride="carousel"
               >
                 <div className="carousel-inner">
-                  <div className="carousel-item active">
-                    <img src="#" className="d-block w-100" alt="Скриншот 1" />
-                  </div>
-                  <div className="carousel-item">
-                    <img src="#" className="d-block w-100" alt="Скриншот 2" />
-                  </div>
-                  {/* Добавь скриншоты по аналогии */}
+                  {oneGame.screenshots.map((screenshot, index) => (
+                    <div
+                      key={index}
+                      className={`carousel-item ${
+                        index === activeSlideIndex ? "active" : ""
+                      }`}
+                    >
+                      <img
+                        src={screenshot.image}
+                        className="d-block w-100"
+                        alt={`Скриншот ${index + 1}`}
+                      />
+                    </div>
+                  ))}
                 </div>
                 <button
                   className="carousel-control-prev"
                   type="button"
                   data-bs-target="#carouselExampleIndicators"
                   data-bs-slide="prev"
+                  onClick={() =>
+                    setActiveSlideIndex(
+                      activeSlideIndex === 0
+                        ? oneGame.screenshots.length - 1
+                        : activeSlideIndex - 1
+                    )
+                  }
                 >
                   <span
                     className="carousel-control-prev-icon"
@@ -93,6 +122,11 @@ const GamePage = () => {
                   type="button"
                   data-bs-target="#carouselExampleIndicators"
                   data-bs-slide="next"
+                  onClick={() =>
+                    setActiveSlideIndex(
+                      (activeSlideIndex + 1) % oneGame.screenshots.length
+                    )
+                  }
                 >
                   <span
                     className="carousel-control-next-icon"
@@ -107,9 +141,11 @@ const GamePage = () => {
       )}
 
       <div className="mt-4">
-        <Link to="/games" className="btn btn-primary">
+        {/* <Link to="/games" className="btn btn-primary"> */}
+        <button onClick={() => navigate(-1)} className="btn text-light">
           Вернуться к списку игр
-        </Link>
+        </button>
+        {/* </Link> */}
       </div>
     </div>
   );

@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import GamesService from "../API/GamesService";
+import { useMemo } from "react";
 
 export const fetchGames = createAsyncThunk(
   "games/fetchGames",
@@ -34,39 +35,54 @@ export const gamesSlice = createSlice({
     error: null,
     status: null,
     oneGame: null,
-    sortGame: [],
+    currentFilters: {
+      platform: null,
+      genre: null,
+      typeSort: null,
+    },
   },
   reducers: {
     sortGames: (state, action) => {
-      switch (action.payload.typeSort) {
-        case "Платформа":
-          state.sortGame = [...state.array].filter((element) =>
-            element.platform.includes(action.payload.platform)
+      const startArr = state.array;
+      const { platform, genre, typeSort } = action.payload;
+
+      if (platform) {
+        state.currentFilters.platform = platform;
+      }
+      if (genre) {
+        state.currentFilters.genre = genre;
+      }
+      if (typeSort) {
+        state.currentFilters.typeSort = typeSort;
+      }
+
+      if (action.payload) {
+        const { platform, genre, typeSort } = action.payload;
+        let sortArr = [...startArr];
+
+        if (platform) {
+          sortArr = sortArr.filter((element) =>
+            element.platform.includes(platform)
           );
-          break;
-        case "Жанр":
-          state.sortGame = [...state.array].filter((element) =>
-            element.genre.includes(action.payload.genre)
-          );
-          break;
-        case "По дате релиза":
-          state.sortGame = [...state.array].sort(
+        }
+        if (genre) {
+          sortArr = sortArr.filter((element) => element.genre === genre);
+        }
+        if (typeSort === "По названию") {
+          sortArr.sort((a, b) => a.title.localeCompare(b.title));
+        }
+        if (typeSort === "По дате релиза") {
+          sortArr.sort(
             (current, next) =>
               new Date(next.release_date) - new Date(current.release_date)
           );
-          break;
-        case "По названию":
-          state.sortGame = [...state.array].sort((a, b) =>
-            a.title.localeCompare(b.title)
-          );
-          break;
+        }
 
-        default:
-          state.sortGame = [...state.array];
-          break;
+        state.array = sortArr;
       }
     },
   },
+
   extraReducers: (builder) => {
     builder
       // получение всех игр без сортировки

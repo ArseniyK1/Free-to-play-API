@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { sortGames } from "../store/gamesSlice";
+import { fetchGamesByPopularity, sortGames } from "../store/gamesSlice";
 
 const GameFilter = ({ fetchGamesWithSort }) => {
   const [sort, setSort] = useState({
@@ -25,6 +25,7 @@ const GameFilter = ({ fetchGamesWithSort }) => {
 
   const changeSortEtcHandler = (event) => {
     const etc = event.target.value;
+
     setSort({ ...sort, etc });
     fetchGamesWithSort(etc); // Вызываем функцию для загрузки игр с выбранной сортировкой
     dispatch(sortGames({ etc, typeSort: etc }));

@@ -1,27 +1,32 @@
-import GameCard from "./GameCard";
-import { useEffect, useState } from "react";
-import GameFilter from "./GameFilter";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchGames, fetchGamesByPopularity } from "../store/gamesSlice";
+import {
+  fetchGames,
+  fetchGamesByPopularity,
+  sortGames,
+} from "../store/gamesSlice";
+import GameCard from "./GameCard";
+import GameFilter from "./GameFilter";
 import { Button, Spinner } from "react-bootstrap";
 
 const GamesList = () => {
-  const { array, status, error, sortGame } = useSelector(
+  const { array, status, error, currentFilters } = useSelector(
     (state) => state.games
   );
   const dispatch = useDispatch();
-  let displayedGames = sortGame.length > 0 ? sortGame : array; // Используем отсортированный массив, если он есть
 
+  let displayedGames = array.length > 0 ? array : []; // Используем отсортированный массив, если он есть
   useEffect(() => {
     dispatch(fetchGames());
-  }, [dispatch]);
+  }, []);
 
   const fetchGamesWithSort = (sortType) => {
-    dispatch(fetchGames()); // Загружаем игры без сортировки перед запросом с сортировкой
+    const currentFiltersWithSort = {
+      ...currentFilters,
+      typeSort: sortType,
+    };
 
-    if (sortType === "По популярности") {
-      dispatch(fetchGamesByPopularity());
-    }
+    dispatch(sortGames(currentFiltersWithSort));
   };
 
   return (
@@ -32,7 +37,7 @@ const GamesList = () => {
         <div className="row">
           <GameFilter fetchGamesWithSort={fetchGamesWithSort} />
           <div className="row">
-            {status === "loading" && displayedGames.length === 0 && (
+            {status === "loading" && array.length === 0 && (
               <Button
                 variant="primary"
                 disabled

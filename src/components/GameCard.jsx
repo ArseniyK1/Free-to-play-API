@@ -20,7 +20,7 @@ const GameCard = ({ game }) => {
         </div>
         <div className="card-footer">
           <button className="btn btn-primary">
-            <Link to={`games/${game.id}`}>Подробнее</Link>
+            <Link to={`/${game.id}`}>Подробнее</Link>
           </button>
         </div>
       </div>

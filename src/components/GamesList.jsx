@@ -37,7 +37,7 @@ const GamesList = () => {
         <div className="row">
           <GameFilter fetchGamesWithSort={fetchGamesWithSort} />
           <div className="row">
-            {status === "loading" && array.length === 0 && (
+            {status === "loading" && array.length === 0 ? (
               <Button
                 variant="primary"
                 disabled
@@ -52,7 +52,7 @@ const GamesList = () => {
                   aria-hidden="true"
                 />
               </Button>
-            )}
+            ) : null}
             {error && (
               <>
                 <h2>Ошибка: {error} </h2>
@@ -64,9 +64,16 @@ const GamesList = () => {
                 </a>
               </>
             )}
-            {displayedGames.map((game) => (
-              <GameCard game={game} key={game.id} />
-            ))}
+            {displayedGames.length > 0
+              ? displayedGames.map((game) => (
+                  <GameCard game={game} key={game.id} />
+                ))
+              : status !== "loading" && (
+                  <div>
+                    Сортировка не дала результата! Обновите страницу и
+                    попробуйте снова!
+                  </div>
+                )}
           </div>
         </div>
       </div>

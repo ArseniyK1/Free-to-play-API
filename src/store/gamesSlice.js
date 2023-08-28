@@ -12,8 +12,8 @@ export const fetchGames = createAsyncThunk(
 
 export const fetchGamesById = createAsyncThunk(
   "games/fetchGamesById",
-  async (id) => {
-    const oneGame = await GamesService.getGameById(id);
+  async (id, thunkAPI) => {
+    const oneGame = await GamesService.getGameById(id, thunkAPI);
 
     return oneGame;
   }
@@ -69,10 +69,10 @@ export const gamesSlice = createSlice({
           sortArr = sortArr.filter((element) => element.genre === genre);
         }
         if (typeSort === "По названию") {
-          sortArr.sort((a, b) => a.title.localeCompare(b.title));
+          sortArr = [...sortArr].sort((a, b) => a.title.localeCompare(b.title));
         }
         if (typeSort === "По дате релиза") {
-          sortArr.sort(
+          sortArr = [...sortArr].sort(
             (current, next) =>
               new Date(next.release_date) - new Date(current.release_date)
           );

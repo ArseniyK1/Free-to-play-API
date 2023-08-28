@@ -17,7 +17,7 @@ export default class GamesService {
       return thunkAPI.rejectWithValue(error.message);
     }
   }
-  static async getGameById(id) {
+  static async getGameById(id, thunkAPI) {
     try {
       const apiUrl =
         "https://cors-anywhere.herokuapp.com/https://www.freetogame.com/api/game/";
@@ -33,7 +33,7 @@ export default class GamesService {
 
       return response ? response.data : "";
     } catch (error) {
-      console.error(error);
+      return thunkAPI.rejectWithValue(error.message);
     }
   }
   static async sortGameByPopularity() {

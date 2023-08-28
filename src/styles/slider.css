@@ -1,0 +1,5 @@
+/* slider.css */
+
+.carousel-item.active {
+  opacity: 1;
+}

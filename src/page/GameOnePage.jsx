@@ -12,15 +12,27 @@ const GamePage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [activeSlideIndex, setActiveSlideIndex] = useState(initialSlideIndex);
-  console.log(oneGame);
+  const [selectedGame, setSelectedGame] = useState(null);
 
   useEffect(() => {
-    dispatch(fetchGamesById(id));
-  }, [id]);
+    if (oneGame) {
+      setSelectedGame(oneGame);
+      setActiveSlideIndex(0); // Устанавливаем активный слайд на первый
+    }
 
-  if (error) {
-    return <p>Error</p>;
-  }
+    if (selectedGame) {
+      localStorage.setItem("selectedGame", JSON.stringify(selectedGame));
+    }
+
+    dispatch(fetchGamesById(id));
+  }, [id, selectedGame]);
+
+  useEffect(() => {
+    const storedGame = localStorage.getItem("selectedGame");
+    if (storedGame) {
+      setSelectedGame(JSON.parse(storedGame));
+    }
+  }, []);
 
   return (
     <div className="container mt-5">
@@ -40,7 +52,7 @@ const GamePage = () => {
           />
         </Button>
       ) : (
-        oneGame && (
+        selectedGame && (
           <>
             <div className="row">
               <div className="col-lg-6">
@@ -70,7 +82,6 @@ const GamePage = () => {
                   <p>{oneGame.minimum_system_requirements.memory}</p>
                   <p>{oneGame.minimum_system_requirements.os}</p>
                   <p>{oneGame.minimum_system_requirements.processor}</p>
-                  <p>{oneGame.minimum_system_requirements.storage}</p>
                 </div>
               ) : (
                 ""
@@ -78,27 +89,31 @@ const GamePage = () => {
             </div>
 
             <div className="mt-4">
-              <h3>Скриншоты</h3>
+              <h3>{oneGame.screenshot && "Скриншоты"}</h3>
               <div
                 id="carouselExampleIndicators"
                 className="carousel slide"
                 data-bs-ride="carousel"
               >
                 <div className="carousel-inner rounded">
-                  {oneGame.screenshots.map((screenshot, index) => (
-                    <div
-                      key={index}
-                      className={`carousel-item ${
-                        index === activeSlideIndex ? "active" : ""
-                      }`}
-                    >
-                      <img
-                        src={screenshot.image}
-                        className="d-block w-100 rounded"
-                        alt={`Скриншот ${index + 1}`}
-                      />
-                    </div>
-                  ))}
+                  {oneGame.screenshots ? (
+                    oneGame.screenshots.map((screenshot, index) => (
+                      <div
+                        key={index}
+                        className={`carousel-item ${
+                          index === activeSlideIndex ? "active" : ""
+                        }`}
+                      >
+                        <img
+                          src={screenshot.image}
+                          className="d-block w-100 rounded"
+                          alt={`Скриншот ${index + 1}`}
+                        />
+                      </div>
+                    ))
+                  ) : (
+                    <div>Нет скриншотов!</div>
+                  )}
                 </div>
                 <button
                   className="carousel-control-prev"
@@ -113,11 +128,15 @@ const GamePage = () => {
                     )
                   }
                 >
-                  <span
-                    className="carousel-control-prev-icon"
-                    aria-hidden="true"
-                  ></span>
-                  <span className="visually-hidden">Previous</span>
+                  {oneGame.screenshot && (
+                    <>
+                      <span
+                        className="carousel-control-prev-icon"
+                        aria-hidden="true"
+                      ></span>
+                      <span className="visually-hidden">Previous</span>{" "}
+                    </>
+                  )}
                 </button>
                 <button
                   className="carousel-control-next"
@@ -141,13 +160,16 @@ const GamePage = () => {
           </>
         )
       )}
+      {error && (
+        <>
+          <h2>Ошибка: {error} </h2>
+        </>
+      )}
 
       <div className="mt-4">
-        {/* <Link to="/games" className="btn btn-primary"> */}
         <button onClick={() => navigate(-1)} className="btn text-light">
           Вернуться к списку игр
         </button>
-        {/* </Link> */}
       </div>
     </div>
   );

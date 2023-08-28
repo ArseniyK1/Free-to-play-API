@@ -50,18 +50,20 @@ const GamePage = () => {
                   alt="Постер игры"
                 />
               </div>
-              <div className="col-lg-6">
-                <h2>Название игры: {oneGame.title}</h2>
-                <p>Дата релиза: {oneGame.release_date}</p>
-                <p>Издатель: {oneGame.publisher}</p>
-                <p>Разработчик: {oneGame.developer}</p>
-                <p>Жанр: {oneGame.genre}</p>
+              <div className="col-lg-6 ">
+                <div className="d-flex flex-column justify-content-center fw-bold  text-light p-2">
+                  <h2>Название игры: {oneGame.title}</h2>
+                  <p>Дата релиза: {oneGame.release_date}</p>
+                  <p>Издатель: {oneGame.publisher}</p>
+                  <p>Разработчик: {oneGame.developer}</p>
+                  <p>Жанр: {oneGame.genre}</p>
+                </div>
               </div>
             </div>
 
             <div className="mt-4">
               {oneGame.minimum_system_requirements ? (
-                <>
+                <div className="d-flex flex-column justify-content-center ps-5 fw-bold rounded-5 text-light border">
                   <h3>Системные требования</h3>
                   Минимальные требования:
                   <p>{oneGame.minimum_system_requirements.graphics}</p>
@@ -69,7 +71,7 @@ const GamePage = () => {
                   <p>{oneGame.minimum_system_requirements.os}</p>
                   <p>{oneGame.minimum_system_requirements.processor}</p>
                   <p>{oneGame.minimum_system_requirements.storage}</p>
-                </>
+                </div>
               ) : (
                 ""
               )}
@@ -82,7 +84,7 @@ const GamePage = () => {
                 className="carousel slide"
                 data-bs-ride="carousel"
               >
-                <div className="carousel-inner">
+                <div className="carousel-inner rounded">
                   {oneGame.screenshots.map((screenshot, index) => (
                     <div
                       key={index}
@@ -92,7 +94,7 @@ const GamePage = () => {
                     >
                       <img
                         src={screenshot.image}
-                        className="d-block w-100"
+                        className="d-block w-100 rounded"
                         alt={`Скриншот ${index + 1}`}
                       />
                     </div>

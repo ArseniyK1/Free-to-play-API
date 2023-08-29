@@ -14,24 +14,21 @@ const GameFilter = () => {
   const changeSortPlatformHandler = (event) => {
     const platform = event.target.value;
     setSort({ ...sort, platform });
+    dispatch(sortGames({ ...sort, platform }));
   };
 
   const changeSortGenreHandler = (event) => {
     const genre = event.target.value;
     setSort({ ...sort, genre });
+    dispatch(sortGames({ ...sort, genre }));
   };
 
   const changeSortEtcHandler = (event) => {
     const etc = event.target.value;
-
+    dispatch(sortGames({ ...sort, etc }));
     setSort({ ...sort, etc });
-  };
-
-  const sumbitSortHandler = () => {
-    if (sort.etc === "По популярности") {
+    if (etc === "По популярности") {
       dispatch(fetchGamesByPopularity());
-    } else {
-      dispatch(sortGames(sort));
     }
   };
 
@@ -109,13 +106,6 @@ const GameFilter = () => {
           </select>
         </div>
       </div>
-      <button
-        className="btn btn-primary ms-3 mb-3 w-auto h-25 my-auto"
-        style={{ width: "100%", height: "100%" }}
-        onClick={sumbitSortHandler}
-      >
-        Сортировать
-      </button>
     </>
   );
 };

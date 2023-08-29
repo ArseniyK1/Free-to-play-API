@@ -42,6 +42,7 @@ export const gamesSlice = createSlice({
       state.sortArray = state.array;
       let startArr = state.sortArray;
       const { platform, genre, etc } = action.payload;
+      console.log(action.payload);
 
       if (action.payload) {
         if (platform) {

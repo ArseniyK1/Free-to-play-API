@@ -5,13 +5,12 @@ import { fetchGamesById } from "../store/gamesSlice";
 import { Button, Spinner } from "react-bootstrap";
 import getRusDate from "../utils/getRusDate";
 
-const initialSlideIndex = 0;
-
 const GamePage = () => {
   const { id } = useParams();
   const { oneGame, status, error } = useSelector((state) => state.games);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const initialSlideIndex = 0;
   const [activeSlideIndex, setActiveSlideIndex] = useState(initialSlideIndex);
   const [selectedGame, setSelectedGame] = useState(null);
 

@@ -20,4 +20,4 @@
 
 # Пример работы
 
-[!img]"/public/screen.png"
+[!img](/public/screen.png)

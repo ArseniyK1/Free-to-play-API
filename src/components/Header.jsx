@@ -8,13 +8,6 @@ const Header = () => {
           <NavLink to="/" className="nav-link">
             Список игр
           </NavLink>
-          <a
-            className="navbar-link me-4"
-            href="https://github.com/ArseniyK1/Free-to-play-API"
-            target="_blank"
-          >
-            GitHub
-          </a>
         </div>
       </nav>
     </>

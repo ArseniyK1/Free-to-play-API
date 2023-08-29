@@ -10,34 +10,24 @@ import GameFilter from "./GameFilter";
 import { Button, Spinner } from "react-bootstrap";
 
 const GamesList = () => {
-  const { array, status, error, currentFilters } = useSelector(
+  const { array, status, error, sortArray } = useSelector(
     (state) => state.games
   );
   const dispatch = useDispatch();
 
-  let displayedGames = array.length > 0 ? array : []; // Используем отсортированный массив, если он есть
+  let displayedGames = sortArray.length > 0 ? sortArray : array; // Выводим отсортированный массив, если он есть
+
   useEffect(() => {
     dispatch(fetchGames());
   }, []);
 
-  const fetchGamesWithSort = (sortType) => {
-    const currentFiltersWithSort = {
-      ...currentFilters,
-      typeSort: sortType,
-    };
-
-    dispatch(sortGames(currentFiltersWithSort));
-  };
-
   return (
     <div>
       <div className="container mt-5">
-        <h2 className="mb-4">Список игр</h2>
-
         <div className="row">
-          <GameFilter fetchGamesWithSort={fetchGamesWithSort} />
+          <GameFilter />
           <div className="row">
-            {status === "loading" && array.length === 0 ? (
+            {status === "loading" && sortArray.length === 0 ? (
               <Button
                 variant="primary"
                 disabled
@@ -59,18 +49,19 @@ const GamesList = () => {
                 <a
                   href="https://cors-anywhere.herokuapp.com/corsdemo"
                   target="_blank"
+                  className=" w-50 fs-5 fw-bold text-decoration-underline"
                 >
                   Подтвердите, пожалуйста, демо сервер CORS
                 </a>
               </>
             )}
-            {displayedGames.length > 0
+            {displayedGames.length
               ? displayedGames.map((game) => (
                   <GameCard game={game} key={game.id} />
                 ))
               : status !== "loading" && (
                   <div>
-                    Сортировка не дала результата! Обновите страницу и
+                    Сортировка не дала результата! Поменяйте фильтры и
                     попробуйте снова!
                   </div>
                 )}

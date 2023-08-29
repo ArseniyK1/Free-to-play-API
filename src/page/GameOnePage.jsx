@@ -3,6 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { fetchGamesById } from "../store/gamesSlice";
 import { Button, Spinner } from "react-bootstrap";
+import getRusDate from "../utils/getRusDate";
 
 const initialSlideIndex = 0;
 
@@ -65,7 +66,7 @@ const GamePage = () => {
               <div className="col-lg-6 ">
                 <div className="d-flex flex-column justify-content-center fw-bold  text-light p-2">
                   <h2>Название игры: {oneGame.title}</h2>
-                  <p>Дата релиза: {oneGame.release_date}</p>
+                  <p>Дата релиза: {getRusDate(oneGame.release_date)}</p>
                   <p>Издатель: {oneGame.publisher}</p>
                   <p>Разработчик: {oneGame.developer}</p>
                   <p>Жанр: {oneGame.genre}</p>
@@ -157,6 +158,11 @@ const GamePage = () => {
                 </button>
               </div>
             </div>
+            <div className="mt-4">
+              <button onClick={() => navigate(-1)} className="btn text-light">
+                Вернуться к списку игр
+              </button>
+            </div>
           </>
         )
       )}
@@ -165,12 +171,6 @@ const GamePage = () => {
           <h2>Ошибка: {error} </h2>
         </>
       )}
-
-      <div className="mt-4">
-        <button onClick={() => navigate(-1)} className="btn text-light">
-          Вернуться к списку игр
-        </button>
-      </div>
     </div>
   );
 };

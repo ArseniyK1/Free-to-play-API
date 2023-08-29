@@ -32,53 +32,38 @@ export const gamesSlice = createSlice({
   name: "games",
   initialState: {
     array: [],
+    sortArray: [],
     error: null,
     status: null,
     oneGame: null,
-    currentFilters: {
-      platform: null,
-      genre: null,
-      typeSort: null,
-    },
   },
   reducers: {
     sortGames: (state, action) => {
-      const startArr = state.array;
-      const { platform, genre, typeSort } = action.payload;
-
-      if (platform) {
-        state.currentFilters.platform = platform;
-      }
-      if (genre) {
-        state.currentFilters.genre = genre;
-      }
-      if (typeSort) {
-        state.currentFilters.typeSort = typeSort;
-      }
+      state.sortArray = state.array;
+      let startArr = state.sortArray;
+      const { platform, genre, etc } = action.payload;
 
       if (action.payload) {
-        const { platform, genre, typeSort } = action.payload;
-        let sortArr = [...startArr];
-
         if (platform) {
-          sortArr = sortArr.filter((element) =>
+          startArr = startArr.filter((element) =>
             element.platform.includes(platform)
           );
         }
         if (genre) {
-          sortArr = sortArr.filter((element) => element.genre === genre);
+          startArr = startArr.filter((element) => element.genre === genre);
         }
-        if (typeSort === "По названию") {
-          sortArr = [...sortArr].sort((a, b) => a.title.localeCompare(b.title));
-        }
-        if (typeSort === "По дате релиза") {
-          sortArr = [...sortArr].sort(
+        if (etc === "По дате релиза") {
+          startArr = [...startArr].sort(
             (current, next) =>
               new Date(next.release_date) - new Date(current.release_date)
           );
         }
-
-        state.array = sortArr;
+        if (etc === "По названию") {
+          startArr = [...startArr].sort((a, b) =>
+            a.title.localeCompare(b.title)
+          );
+        }
+        state.sortArray = startArr;
       }
     },
   },
@@ -118,7 +103,7 @@ export const gamesSlice = createSlice({
       })
       .addCase(fetchGamesByPopularity.fulfilled, (state, action) => {
         state.status = "resolved";
-        state.sortGame = action.payload;
+        state.array = action.payload;
       })
       .addCase(fetchGamesByPopularity.rejected, (state, action) => {
         state.status = "rejected";

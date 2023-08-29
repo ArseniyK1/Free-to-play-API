@@ -42,7 +42,6 @@ export const gamesSlice = createSlice({
       state.sortArray = state.array;
       let startArr = state.sortArray;
       const { platform, genre, etc } = action.payload;
-      console.log(action.payload);
 
       if (action.payload) {
         if (platform) {
@@ -64,7 +63,11 @@ export const gamesSlice = createSlice({
             a.title.localeCompare(b.title)
           );
         }
-        state.sortArray = startArr;
+        if (startArr.length > 0) {
+          state.sortArray = startArr;
+        } else {
+          state.sortArray = [];
+        }
       }
     },
   },
@@ -104,7 +107,7 @@ export const gamesSlice = createSlice({
       })
       .addCase(fetchGamesByPopularity.fulfilled, (state, action) => {
         state.status = "resolved";
-        state.array = action.payload;
+        state.sortArray = action.payload;
       })
       .addCase(fetchGamesByPopularity.rejected, (state, action) => {
         state.status = "rejected";

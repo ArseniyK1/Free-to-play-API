@@ -32,9 +32,14 @@ const GameFilter = () => {
     }
   };
 
+  const resetSortHandler = () => {
+    setSort({ platform: "", genre: "", etc: "" });
+    dispatch(sortGames({ ...sort, platform: "", genre: "", etc: "" }));
+  };
+
   return (
-    <>
-      <div className="col-md-5 d-flex  mb-3 w-30 justify-content-between">
+    <div>
+      <div className="col-md-5 d-flex mb-3 justify-content-between w-50">
         <div>
           <label htmlFor="platformSelect" className="form-label">
             Платформа
@@ -105,8 +110,14 @@ const GameFilter = () => {
             <option>По названию</option>
           </select>
         </div>
+        <button
+          className="btn text-light w-auto ms-3 mb-0 my-auto"
+          onClick={resetSortHandler}
+        >
+          Сбросить
+        </button>
       </div>
-    </>
+    </div>
   );
 };
 

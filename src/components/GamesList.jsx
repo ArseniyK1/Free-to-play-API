@@ -30,7 +30,6 @@ const GamesList = () => {
             {status === "loading" && sortArray.length === 0 ? (
               <Button
                 variant="primary"
-                disabled
                 className="w-auto mx-auto"
                 style={{ background: "var(--purple-primary)" }}
               >

@@ -79,16 +79,10 @@ const GamesList = () => {
                 )}
               </>
             )}
-            {cachedDisplayedGames.length > 0
-              ? cachedDisplayedGames.map((game) => (
-                  <GameCard game={game} key={game.id} />
-                ))
-              : status !== "loading" && (
-                  <div>
-                    Сортировка не дала результата! Сбрось фильтры и попробуй
-                    снова!
-                  </div>
-                )}
+            {cachedDisplayedGames.length > 0 &&
+              cachedDisplayedGames.map((game) => (
+                <GameCard game={game} key={game.id} />
+              ))}
           </div>
         </div>
       </div>

@@ -16,6 +16,22 @@ body {
   background-position: center;
 }
 
+body::-webkit-scrollbar {
+  background: var(--gray-middle);
+  width: 10px;
+  box-shadow: inset 2px 2px 5px 0 rgba(#fff, 0.5);
+  /* border-radius: 100px; */
+  cursor: pointer;
+}
+
+body::-webkit-scrollbar-thumb {
+  width: 100%;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.5);
+  border-radius: 100px;
+  cursor: pointer;
+}
+
 .navbar {
   background-color: var(--gray-middle);
 }

@@ -39,16 +39,17 @@ const GameFilter = () => {
 
   return (
     <div>
-      <div className="col-md-5 d-flex mb-3 justify-content-between w-50">
-        <div>
+      <div className="col-md-5 d-flex mb-3 w-100 ">
+        <div className="me-2">
           <label htmlFor="platformSelect" className="form-label">
             Платформа
           </label>
           <select
-            className="form-select text-light"
+            className="form-select text-light "
             style={{
               background: "var(--gray-middle)",
               border: "1px solid var(--purple-primary)",
+              marginRight: "2rem",
             }}
             id="platformSelect"
             onChange={changeSortPlatformHandler}
@@ -59,7 +60,7 @@ const GameFilter = () => {
             <option>Web Browser</option>
           </select>
         </div>
-        <div>
+        <div className="me-2">
           <label htmlFor="genreSelect" className="form-label">
             Жанр
           </label>

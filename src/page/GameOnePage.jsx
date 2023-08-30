@@ -19,8 +19,14 @@ const GamePage = () => {
     dispatch(fetchGamesById(id));
   }, [dispatch, id]);
 
+  console.log(oneGame);
   return (
     <div className="container mt-5">
+      <div className="mt-4">
+        <button onClick={() => navigate(-1)} className="btn btn-primary mb-3">
+          ⇽ Назад
+        </button>
+      </div>
       {status === "loading" ? (
         <div className="text-center">
           <Button
@@ -70,8 +76,8 @@ const GamePage = () => {
               </div>
             )}
 
-            {oneGame.screenshots && (
-              <div className="mt-4">
+            {oneGame.screenshots && oneGame.screenshots.length > 0 && (
+              <div className="mt-4 mb-5">
                 <h3>Скриншоты</h3>
                 <div
                   id="carouselExampleIndicators"
@@ -132,18 +138,21 @@ const GamePage = () => {
                 </div>
               </div>
             )}
-
-            <div className="mt-4">
-              <button onClick={() => navigate(-1)} className="btn btn-primary">
-                Вернуться к списку игр
-              </button>
-            </div>
           </>
         )
       )}
       {error && !oneGame && (
         <div className="mt-4">
           <h2>Ошибка: {error}</h2>
+          {error === "Request failed with status code 403" && (
+            <a
+              href="https://cors-anywhere.herokuapp.com/corsdemo"
+              target="_blank"
+              className=" w-50 fs-5 fw-bold text-decoration-underline"
+            >
+              Подтвердите, пожалуйста, демо сервер CORS
+            </a>
+          )}
         </div>
       )}
     </div>

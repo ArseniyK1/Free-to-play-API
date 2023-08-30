@@ -1,6 +1,7 @@
 # FreeToPlay Api Search
 
 Проект "FreeToPlay Api Search" разработан при помощию ReactJS, Redux и Redux ToolKit, react-router-dom v6 и UI Framework - Bootstrap.
+Задеплоиный проект https://wonderful-tanuki-0dc864.netlify.app
 
 # Запуск проекта
 
@@ -20,6 +21,7 @@
 2. Если по выбранным фильтрам нет игр (например, у игр на платформе Web Browser нет игр Action RPG), то возвращается изначальный массив с играми. Рекомендуется сбросить фильтры и попробовать снова.
 
 # Пример работы
+
 Список игр
 
 ![img](/public/screen.png)

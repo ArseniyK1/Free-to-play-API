@@ -36,17 +36,9 @@ export default class GamesService {
   }
   static async sortGameByPopularity() {
     try {
-      const apiUrl =
-        "https://cors-anywhere.herokuapp.com/https://www.freetogame.com/api/games";
+      const apiUrl = "http://localhost:3002/api/games/popularity";
 
-      const response = await axios.get(apiUrl, {
-        headers: {
-          "X-Requested-With": "XMLHttpRequest",
-        },
-        params: {
-          "sort-by": "popularity",
-        },
-      });
+      const response = await axios.get(apiUrl);
 
       return response ? response.data : "";
     } catch (error) {

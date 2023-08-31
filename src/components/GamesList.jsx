@@ -13,8 +13,6 @@ const GamesList = () => {
   );
   const dispatch = useDispatch();
 
-  let displayedGames = sortArray.length > 0 ? sortArray : array; // Выводим отсортированный массив, если он есть
-
   useEffect(() => {
     dispatch(fetchGames());
   }, []);

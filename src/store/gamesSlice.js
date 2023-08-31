@@ -1,6 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import GamesService from "../API/GamesService";
-import { useMemo } from "react";
 
 export const fetchGames = createAsyncThunk(
   "games/fetchGames",

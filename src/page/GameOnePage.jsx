@@ -19,7 +19,6 @@ const GamePage = () => {
     dispatch(fetchGamesById(id));
   }, [dispatch, id]);
 
-  console.log(oneGame);
   return (
     <div className="container mt-5">
       <div className="mt-4">
